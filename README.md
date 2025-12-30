@@ -63,7 +63,7 @@ User-friendly application for analyzing spheroid images to identify core, border
 
 ```bash
 git clone <repo-url>
-cd pycvballs
+cd spheroid-analysis
 uv venv && source .venv/bin/activate
 uv pip install -e .
 ```
