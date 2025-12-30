@@ -7,12 +7,7 @@ REM Activate virtual environment
 call .venv\Scripts\activate.bat
 
 REM Build with PyInstaller
-pyinstaller --name="SpheroidAnalysis" ^
-    --windowed ^
-    --onefile ^
-    --add-data="app_logo.png;." ^
-    --hidden-import=PIL._tkinter_finder ^
-    spheroid_app.py
+pyinstaller spheroid_app.spec --clean --noconfirm
 
 if %ERRORLEVEL% EQU 0 (
     echo.
