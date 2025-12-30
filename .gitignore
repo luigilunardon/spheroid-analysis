@@ -1,0 +1,48 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist-*/
+*.egg
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# PyInstaller
+build/
+dist/
+*.spec.bak
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Application
+*.log
+
+# Build artifacts - keep only final zips
+dist/*.app/
+dist/SpheroidAnalysis
+dist/*.exe
+dist/*.pkg
+
+# Temporary test files
+test_*.png
+debug_*.png
+test_*.py
+debug_*.py
