@@ -6,47 +6,60 @@ User-friendly application for analyzing spheroid images to identify core, border
 
 ## For Users
 
+### Download
+
+Download the latest release for your platform from the [Releases](https://github.com/luigilunardon/spheroid-analysis/releases) page:
+
+- **macOS**: `SpheroidAnalysis-macOS.zip`
+- **Windows**: `SpheroidAnalysis-Windows.zip`
+- **Linux (Debian/Ubuntu)**: `SpheroidAnalysis-Linux-Debian.zip`
+- **Linux (RedHat/Fedora/AlmaLinux)**: `SpheroidAnalysis-Linux-RedHat.zip`
+
 ### Installation & First Launch
 
 **macOS:**
 1. Download `SpheroidAnalysis-macOS.zip`
-2. Unzip and drag `SpheroidAnalysis.app` to Applications
-3. **Double-click to launch**
-4. **First launch note:** App may require 2-3 clicks to start (normal for unsigned apps - this only happens once)
-5. If security warning appears: Right-click → Open → Open
+2. Unzip the file and drag `SpheroidAnalysis.app` to the Applications folder
+3. Right-click the app and select "Open" (required for unsigned apps)
+4. Click "Open" in the security dialog
+5. **Note:** The app is not code-signed, so macOS will show a security warning on first launch
 
 **Windows:**
-1. Download `SpheroidAnalysis.exe`
-2. Double-click to run
-3. If Windows Defender blocks: Click "More info" → "Run anyway"
+1. Download `SpheroidAnalysis-Windows.zip`
+2. Extract the ZIP file
+3. Double-click `SpheroidAnalysis.exe` to run
+4. If Windows Defender blocks: Click "More info" → "Run anyway"
 
 **Linux:**
-1. Download `SpheroidAnalysis`
-2. Make executable: `chmod +x SpheroidAnalysis`
-3. Run: `./SpheroidAnalysis`
+1. Download the appropriate ZIP for your distribution
+2. Extract: `unzip SpheroidAnalysis-Linux-*.zip`
+3. Make executable: `chmod +x SpheroidAnalysis`
+4. Run: `./SpheroidAnalysis`
 
 ### Quick Start
 
 1. Click **"Load Image"** - select your spheroid image
-2. Adjust sliders to fine-tune detection (hover **?** buttons for help)
+2. Adjust sliders to fine-tune detection (hover **i** buttons for help) and crop the image
 3. Switch between **Overlay** and **Binary** views
 4. Click **"Save Results"** to export
 
 ### Key Parameters
 
-| Parameter | Range | Description | Default |
-|-----------|-------|-------------|---------|
-| Denoise Strength | 1-20 | Remove noise (decimal) | 10 |
-| Contrast Enhancement | 1-10 | Improve visibility (decimal) | 2.0 |
-| Threshold | 0-255 | Separate spheroid from background | 127 |
-| **Core Size** | 1-99% | **Higher = larger core region** | 50% |
-| Min Area | pixels | Filter noise | 100 |
+These sliders help you fine-tune how the software identifies your spheroid and its core region. Hover over the **i** buttons in the app for quick reminders.
 
-**Core Size explained:**
-- Identifies the darkest pixels within the spheroid as "core"
-- **50%** = Half the spheroid is core (median split)
-- **25%** = Only darkest quarter is core (small core)
-- **75%** = Three-quarters is core (large core)
+| Parameter | Range | What it does | When to adjust | Default |
+|-----------|-------|--------------|----------------|---------|
+| **Denoise Strength** | 1-20 | Smooths out grainy/noisy images | Increase if your image looks speckled or has noise from the microscope | 10 |
+| **Contrast Enhancement** | 1-10 | Makes light and dark areas more distinct | Increase if your spheroid is hard to see or looks washed out | 2.0 |
+| **Threshold** | 0-255 | Decides what counts as "spheroid" vs "background" | Adjust if the spheroid outline isn't capturing the right area - lower includes more, higher includes less | 127 |
+| **Core Size** | 1-99% | Determines how much of the spheroid is considered "core" (darker region) vs "border" (lighter region) | Set based on your biological definition - 50% splits evenly, lower values give smaller core, higher gives larger core | 50% |
+| **Min Area** | pixels | Ignores small specks and artifacts | Increase if small dots are being counted as spheroid pieces | 100 |
+
+**Understanding Core Size:**
+The "core" is the darker, denser part of your spheroid. The Core Size percentage tells the software what portion of the spheroid should be classified as core:
+- **50%** = The darkest half of the spheroid pixels become the core
+- **25%** = Only the darkest quarter is core (if you have a small, dense core)
+- **75%** = Most of the spheroid is core (if your core is large or diffuse)
 
 ### Understanding Results
 
@@ -61,10 +74,18 @@ User-friendly application for analyzing spheroid images to identify core, border
 
 ### Setup
 
+This project uses [uv](https://github.com/astral-sh/uv) for package management.
+
 ```bash
-git clone <repo-url>
+# Clone the repository
+git clone https://github.com/luigilunardon/spheroid-analysis.git
 cd spheroid-analysis
-uv venv && source .venv/bin/activate
+
+# Create and activate virtual environment with uv
+uv venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
 uv pip install -e .
 ```
 
@@ -76,100 +97,29 @@ python src/spheroid_app.py
 
 ### Build Executables
 
-| Platform | Command | Output |
-|----------|---------|--------|
-| macOS | `./scripts/build_macos.sh` | `dist/SpheroidAnalysis.app` |
-| Windows | `scripts/build_windows.bat` | `dist/SpheroidAnalysis.exe` |
-| Linux | `./scripts/build_linux.sh` | `dist/SpheroidAnalysis` |
-
-**Package macOS app:**
+**Build macOS and Linux:**
 ```bash
-cd dist
-ditto -c -k --sequesterRsrc --keepParent SpheroidAnalysis.app SpheroidAnalysis-macOS.zip
+./scripts/build-all.sh
 ```
 
-### Project Structure
+This creates:
+- `dist/SpheroidAnalysis-macOS.zip` (native macOS build)
+- `dist/SpheroidAnalysis-Linux-Debian.zip` (Docker)
+- `dist/SpheroidAnalysis-Linux-RedHat.zip` (Docker)
 
-```
-├── src/
-│   ├── spheroid_app.py          # GUI application
-│   ├── spheroid_processor.py    # Image processing core
-│   └── app_logo.png             # App icon
-├── scripts/
-│   ├── build_macos.sh           # macOS build script
-│   ├── build_windows.bat        # Windows build script
-│   ├── build_linux.sh           # Linux build script
-│   └── clean.sh                 # Clean build artifacts
-├── pyproject.toml               # Project config & dependencies
-├── requirements.txt             # Legacy pip requirements
-└── spheroid_app.spec            # PyInstaller configuration
-├── build_windows.bat        # Windows build script
-└── build_linux.sh           # Linux build script
+**Build Windows:**
+
+Windows builds must be created on a Windows machine:
+```cmd
+scripts\build_windows.bat
 ```
 
-### Dependencies
+This creates `dist/SpheroidAnalysis.exe`
 
-- Python 3.12
-- opencv-python 4.11.0
-- numpy 2.4.0
-- Pillow 12.0.0
-- customtkinter 5.2.2
-- pyinstaller 6.17.0
-
-### Troubleshooting
-
-**macOS: App requires multiple clicks on first launch**
-- Normal for unsigned apps
-- Only happens once
-- To fix permanently: code sign with Apple Developer ID ($99/year)
-
-**Build fails:**
-- Use Python 3.12 (not 3.13)
-- macOS: `xcode-select --install`
-- Linux: `sudo apt-get install python3-tk build-essential`
-- Windows: Use Command Prompt, not PowerShell
-
-**Security warnings:**
-- macOS: Right-click → Open
-- Windows: "More info" → "Run anyway"
-- For production: use code signing
-
----
-
-## Technical Details
-
-### Image Processing Pipeline
-
-1. **Denoise:** Non-local Means Denoising
-2. **Normalize:** Stretch to 0-255 range
-3. **Enhance:** CLAHE (local) or global contrast
-4. **Auto-invert:** Detect dark-on-light images
-5. **Threshold:** Binary segmentation
-6. **Morphology:** Noise cleanup
-7. **Core detection:** Intensity-based classification
-
-### Core Detection Algorithm
-
-After inversion (spheroid = white on black):
-- **Core pixels:** BRIGHTER than (100 - percentile) threshold
-- Originally darker pixels → brighter after inversion → core
-- **Border pixels:** Remaining spheroid area
-- **Higher percentile** → larger core region
-
-Example with 50% percentile:
-- Darkest 50% of original spheroid pixels → core
-- Lightest 50% → border
-
-### Performance
-
-- ~1 second for 1000×1000 images
-- ~5-10 seconds for 4000×4000 images
-- Memory: ~200-500 MB
-- App size: ~55 MB
-
----
+**Requirements:**
+- macOS build: Must run on macOS with `uv` installed
+- Linux builds: Require Docker (can run on any OS)
+- Windows build: Must run on Windows with `uv` installed
 
 **Version 1.0.0** | December 2025
-
-License: [Add your license]
-Contact: [Add your contact info]
+License: MIT

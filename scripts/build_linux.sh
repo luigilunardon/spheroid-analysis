@@ -11,7 +11,6 @@ pyinstaller --name="SpheroidAnalysis" \
     --windowed \
     --onefile \
     --add-data="app_logo.png:." \
-    --add-data="app_icon.png:." \
     --hidden-import=PIL._tkinter_finder \
     spheroid_app.py
 

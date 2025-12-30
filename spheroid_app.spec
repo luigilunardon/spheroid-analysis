@@ -6,7 +6,7 @@ a = Analysis(
     ['src/spheroid_app.py'],
     pathex=[],
     binaries=[],
-    datas=[('src/app_logo.png', '.'), ('src/app_icon.png', '.')],
+    datas=[('src/app_logo.png', '.')],
     hiddenimports=['PIL._tkinter_finder'],
     hookspath=[],
     hooksconfig={},

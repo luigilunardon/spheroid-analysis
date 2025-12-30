@@ -25,6 +25,11 @@ if [ $? -eq 0 ]; then
     echo ""
     echo "To test: open dist/SpheroidAnalysis.app"
     echo "To distribute: Use dist/SpheroidAnalysis-macOS.zip"
+    
+    # Clean build artifacts (keep .zip files)
+    echo ""
+    echo "Cleaning build artifacts..."
+    ./scripts/clean.sh
 else
     echo "✗ Build failed!"
     exit 1

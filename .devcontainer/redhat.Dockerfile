@@ -4,7 +4,7 @@ FROM almalinux:9
 # Install Python and dependencies
 RUN dnf install -y \
     python3.12 \
-    python3-pip \
+    python3.12-pip \
     gtk3 \
     libSM \
     libXext \
@@ -13,12 +13,14 @@ RUN dnf install -y \
 
 WORKDIR /workspace
 
+# Copy project files
+COPY pyproject.toml README.md /workspace/
+COPY src/ /workspace/src/
+
 # Install Python dependencies
-COPY pyproject.toml /workspace/
 RUN python3.12 -m pip install .
 
-# Build script
-COPY scripts/build_linux.sh /build_linux.sh
-RUN chmod +x /build_linux.sh
+# Copy spec file
+COPY spheroid_app.spec /workspace/
 
-CMD ["/bin/bash", "/build_linux.sh"]
+CMD ["pyinstaller", "--clean", "--noconfirm", "spheroid_app.spec"]

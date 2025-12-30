@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Install Python and dependencies
 RUN apt-get update && apt-get install -y \
-    python3.12 \
+    python3 \
     python3-pip \
     python3-venv \
     libgtk-3-0 \
@@ -17,12 +17,14 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /workspace
 
+# Copy project files
+COPY pyproject.toml README.md /workspace/
+COPY src/ /workspace/src/
+
 # Install Python dependencies
-COPY pyproject.toml /workspace/
-RUN python3.12 -m pip install --break-system-packages .
+RUN python3 -m pip install --break-system-packages .
 
-# Build script
-COPY scripts/build_linux.sh /build_linux.sh
-RUN chmod +x /build_linux.sh
+# Copy spec file
+COPY spheroid_app.spec /workspace/
 
-CMD ["/bin/bash", "/build_linux.sh"]
+CMD ["pyinstaller", "--clean", "--noconfirm", "spheroid_app.spec"]
