@@ -20,9 +20,9 @@ Download the latest release for your platform from the [Releases](https://github
 **macOS:**
 1. Download `SpheroidAnalysis-macOS.zip`
 2. Unzip the file and drag `SpheroidAnalysis.app` to the Applications folder
-3. Right-click the app and select "Open" (required for unsigned apps)
+3. Right-click the app and select "Open"
 4. Click "Open" in the security dialog
-5. **Note:** The app is not code-signed, so macOS will show a security warning on first launch
+5. **Note:** The app is not code-signed, so macOS may show a security warning on first launch
 
 **Windows:**
 1. Download `SpheroidAnalysis-Windows.zip`
@@ -39,27 +39,21 @@ Download the latest release for your platform from the [Releases](https://github
 ### Quick Start
 
 1. Click **"Load Image"** - select your spheroid image
-2. Adjust sliders to fine-tune detection (hover **i** buttons for help) and crop the image
-3. Switch between **Overlay** and **Binary** views
-4. Click **"Save Results"** to export
+2. Adjust sliders to crop the image and to fine-tune detection (hover **i** buttons for help)
+3. Switch between **Overlay** and **Binary** (black and white) views
+4. Click **Save** to export
 
 ### Key Parameters
 
-These sliders help you fine-tune how the software identifies your spheroid and its core region. Hover over the **i** buttons in the app for quick reminders.
+The sliders help you fine-tune how the software identifies your spheroid and its core region. Hover over the **i** buttons in the app for quick reminders.
 
 | Parameter | Range | What it does | When to adjust | Default |
 |-----------|-------|--------------|----------------|---------|
 | **Denoise Strength** | 1-20 | Smooths out grainy/noisy images | Increase if your image looks speckled or has noise from the microscope | 10 |
 | **Contrast Enhancement** | 1-10 | Makes light and dark areas more distinct | Increase if your spheroid is hard to see or looks washed out | 2.0 |
 | **Threshold** | 0-255 | Decides what counts as "spheroid" vs "background" | Adjust if the spheroid outline isn't capturing the right area - lower includes more, higher includes less | 127 |
-| **Core Size** | 1-99% | Determines how much of the spheroid is considered "core" (darker region) vs "border" (lighter region) | Set based on your biological definition - 50% splits evenly, lower values give smaller core, higher gives larger core | 50% |
+| **Core Size** | 1-99% | Determines how much of the spheroid is considered "core" (darker region) vs "border" (lighter region) | 50% splits evenly, lower values give smaller and darker cores, higher gives larger cores | 50% |
 | **Min Area** | pixels | Ignores small specks and artifacts | Increase if small dots are being counted as spheroid pieces | 100 |
-
-**Understanding Core Size:**
-The "core" is the darker, denser part of your spheroid. The Core Size percentage tells the software what portion of the spheroid should be classified as core:
-- **50%** = The darkest half of the spheroid pixels become the core
-- **25%** = Only the darkest quarter is core (if you have a small, dense core)
-- **75%** = Most of the spheroid is core (if your core is large or diffuse)
 
 ### Understanding Results
 
